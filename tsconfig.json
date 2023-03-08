@@ -1,0 +1,33 @@
+{
+  // Common TS settings. For build tsconfig.build.json is used.
+  "compilerOptions": {
+    "allowJs": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "target": "ES2022", // Node.js 18 fully supports ES2022
+    "module": "CommonJS",
+    "sourceMap": true,
+    "declaration": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "suppressExcessPropertyErrors": false,
+    "suppressImplicitAnyIndexErrors": false
+  },
+  "include": [
+    "./src/**/*",
+    "./test/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+}

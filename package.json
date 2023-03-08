@@ -1,0 +1,32 @@
+{
+  "name": "sam",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc -p tsconfig.json",
+    "dev": "yarn build && sam local start-api",
+    "lint": "eslint \"{src}/**/*.ts\" --fix",
+    "prettier": "prettier --write \"*/**/*.ts\""
+  },
+  "author": "Dolzhansky",
+  "license": "MIT",
+  "private": true,
+  "engines": {
+    "node": ">=18.14.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.111",
+    "@types/node": "^18.14.6",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.3.2",
+    "rimraf": "^4.3.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  }
+}
