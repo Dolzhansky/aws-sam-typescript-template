@@ -2,26 +2,109 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: >-
   sam
 
+
 Transform:
   - AWS::Serverless-2016-10-31
 
+Parameters:
+  REDIS_HOST:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred Redis host'
+    Default: 'localhost'
+  REDIS_PORT:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred Redis port'
+    Default: '6379'
+  REDIS_USER:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred Redis user'
+    Default: 'default'
+  REDIS_PASSWORD:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred Redis password'
+    Default: 'default'
+  REDIS_DATABASE:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred Redis db'
+    Default: '0'
+  JWT_TOKEN:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: 'Requred jwt secret token'
+    Default: 'changeme'
+
 Resources:
-  getAllItemsFunction:
+  users:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: dist/getUser.getUser
+      Handler: dist/handlers/users.getUser
       Runtime: nodejs18.x
       Architectures:
         - x86_64
       MemorySize: 128
       Timeout: 100
-      Description: A simple example includes a HTTP get method to get all items from a DynamoDB table.
+      Description: Get user by token
+      Environment:
+        Variables:
+          REDIS_HOST: !Ref REDIS_HOST
+          REDIS_PORT: !Ref REDIS_PORT
+          REDIS_USER: !Ref REDIS_USER
+          REDIS_PASSWORD: !Ref REDIS_PASSWORD
+          REDIS_DATABASE: !Ref REDIS_DATABASE
+          JWT_TOKEN: !Ref JWT_TOKEN
       Events:
         Api:
           Type: Api
           Properties:
-            Path: /
+            Path: /users/@me
             Method: GET
+  registration:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/authorization.registration
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get user by token
+      Environment:
+        Variables:
+          REDIS_HOST: !Ref REDIS_HOST
+          REDIS_PORT: !Ref REDIS_PORT
+          REDIS_USER: !Ref REDIS_USER
+          REDIS_PASSWORD: !Ref REDIS_PASSWORD
+          REDIS_DATABASE: !Ref REDIS_DATABASE
+          JWT_TOKEN: !Ref JWT_TOKEN
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /auth/registartion
+            Method: POST
+  login:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: dist/handlers/authorization.login
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: Get user by token
+      Environment:
+        Variables:
+          REDIS_HOST: !Ref REDIS_HOST
+          REDIS_PORT: !Ref REDIS_PORT
+          REDIS_USER: !Ref REDIS_USER
+          REDIS_PASSWORD: !Ref REDIS_PASSWORD
+          REDIS_DATABASE: !Ref REDIS_DATABASE
+          JWT_TOKEN: !Ref JWT_TOKEN
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /auth/login
+            Method: POST
 Outputs:
   WebEndpoint:
     Description: "API Gateway endpoint URL for Prod stage"
