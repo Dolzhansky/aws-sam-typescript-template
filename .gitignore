@@ -1,4 +1,6 @@
+.idea
 dist
 yarn.lock
 *.log
 node_modules
+.DS_Store
